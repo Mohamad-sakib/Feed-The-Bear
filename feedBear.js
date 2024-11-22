@@ -1,128 +1,98 @@
-let gameFrame = "🧸🌳🌳\n🌳🌳🌳\n🌳🌳🌳";
+// //Maps  *****************************************
+// const gameMap1 = 
+// const gameMap2 =
+// const gameMap3 =
+// const gameMap4 =
+// const gameMap5 =
+// const gameMap6 =
+
+// //huntersPositions in maps  *****************************************
+// const huntersPosition1 =
+// const huntersPosition2 =
+// const huntersPosition3 =
+// const huntersPosition4 =
+// const huntersPosition5 =
+// const huntersPosition6 =
+
+// //bearPositons in maps *********************************
+// const bearPositionInMap1 =
+// const bearPositionInMap2 =
+// const bearPositionInMap3 =
+// const bearPositionInMap4 =
+// const bearPositionInMap5 =
+// const bearPositionInMap6 =
+
+// //foodPositions in maps  *****************************************
+// const foodPositionsInMap1 = 
+// const foodPositionsInMap2 = 
+// const foodPositionsInMap3 = 
+// const foodPositionsInMap4 = 
+// const foodPositionsInMap5 = 
+// const foodPositionsInMap6 = 
+
+//gameFrame and object postions *****************************************
+let gameFrame = "🧸🌳🌳\n🌳🌳🌳\n🌳🌳🍇";
 let huntersPosition = "";
 let bearPosition = 0;
+let foodPostion = 18;
+let isWon = false;
 
-//function to move right ********************************************
+function getMovementConst(move) {
+  switch (move) {
+    case "a":
+      return -2;
+    case "d":
+      return 2;
+    case "s":
+      return 7;
+    case "w":
+      return -7;
+  }
+}
 
-function takeRight(index, bearPosi, hasNeedToAddSymbol) {
+function addSymbol(movementConst, index, bearLocation) {
+  if (index === bearLocation + movementConst) {
+    if (bearLocation + movementConst === foodPostion) {
+      isWon = true;
+      return "🐻" + makeMove(movementConst, index + 1, bearLocation, false);
+    }
+
+    return "🧸" + makeMove(movementConst, index + 1, bearLocation, false);
+  }
+
+  if (index === foodPostion) {
+    return "🍇" + makeMove(movementConst, index + 1, bearLocation, false);
+  }
+
+  return "🌳" + makeMove(movementConst, index + 1, bearLocation, false);
+}
+
+function makeMove(movementConst, index, bearLocation, hasNeedToAddSymbol) {
+  const bearNewLocation = bearLocation + movementConst;
+
   if (index > gameFrame.length - 1) {
-    bearPosition = bearPosi + 2;
+    bearPosition = bearNewLocation;
     return "";
   }
 
-  if (index === 6 || index === 13 || index === 20) {
-    return "\n" + takeRight(index + 1, bearPosi, true)
+  if (index === 6 || index === 13 || index === 21) {
+    return "\n" + makeMove(movementConst, index + 1, bearLocation, true)
   }
 
   if (hasNeedToAddSymbol) {
-    if (index === bearPosi) {
-      return "🌳" + takeRight(index + 1, bearPosi, false);
-    }
-
-    if (index === bearPosi + 2) {
-      return "🧸" + takeRight(index + 1, bearPosi, false);
-    }
-    return "🌳" + takeRight(index + 1, bearPosi, false);
+    return addSymbol(movementConst, index, bearLocation, hasNeedToAddSymbol);
   }
 
-  return "" + takeRight(index + 1, bearPosi, true);
+  return "" + makeMove(movementConst, index + 1, bearLocation, true);
 }
-
-//function to move left ********************************************
-function takeLeft(index, bearPosi, hasNeedToAddSymbol) {
-  if (index > gameFrame.length - 1) {
-    bearPosition = bearPosi - 2;
-    return "";
-  }
-
-  if (index === 6 || index === 13 || index === 20) {
-    return "\n" + takeLeft(index + 1, bearPosi, true)
-  }
-
-  if (hasNeedToAddSymbol) {
-    if (index === bearPosi) {
-      return "🌳" + takeLeft(index + 1, bearPosi, false);
-    }
-
-    if (index === bearPosi - 2) {
-      return "🧸" + takeLeft(index + 1, bearPosi, false);
-    }
-    return "🌳" + takeLeft(index + 1, bearPosi, false);
-  }
-
-  return "" + takeLeft(index + 1, bearPosi, true);
-}
-
-//function to move up
-function moveUp(index, bearPosi, hasNeedToAddSymbol) {
-  if (index > gameFrame.length - 1) {
-    bearPosition = bearPosi - 7;
-    return "";
-  }
-
-  if (index === 6 || index === 13 || index === 20) {
-    return "\n" + moveUp(index + 1, bearPosi, true)
-  }
-
-  if (hasNeedToAddSymbol) {
-    if (index === bearPosi) {
-      return "🌳" + moveUp(index + 1, bearPosi, false);
-    }
-
-    if (index === bearPosi - 7) {
-      return "🧸" + moveUp(index + 1, bearPosi, false);
-    }
-    return "🌳" + moveUp(index + 1, bearPosi, false);
-  }
-
-  return "" + moveUp(index + 1, bearPosi, true);
-}
-
-//function for moveDown 
-
-function moveDown(index, bearPosi, hasNeedToAddSymbol) {
-  if (index > gameFrame.length - 1) {
-    bearPosition = bearPosi + 7;
-    return "";
-  }
-
-  if (index === 6 || index === 13 || index === 20) {
-    return "\n" + moveDown(index + 1, bearPosi, true)
-  }
-
-  if (hasNeedToAddSymbol) {
-    if (index === bearPosi) {
-      return "🌳" + moveDown(index + 1, bearPosi, false);
-    }
-
-    if (index === bearPosi + 7) {
-      return "🧸" + moveDown(index + 1, bearPosi, false);
-    }
-    return "🌳" + moveDown(index + 1, bearPosi, false);
-  }
-
-  return "" + moveDown(index + 1, bearPosi, true);
-}
-
 
 function modifyGameFrame(move) {
-  if (move === "d") {
-    return takeRight(0, bearPosition, true);
-  }
-
-  if (move === "a") {
-    return takeLeft(0, bearPosition, true);
-  }
-
-  if(move === "s") {
-    return moveDown(0, bearPosition, true);
-  }
-
-  if(move === "w") {
-    return moveUp(0, bearPosition, true);
-  }
+  const movementConst = getMovementConst(move);
+  return makeMove(movementConst, 0, bearPosition, true);
 }
+
 //validationPart*****************************
+
 function isValidLeftStep() {
   if (bearPosition < 6) {
     return bearPosition > 1;
@@ -160,7 +130,7 @@ function isValidDownStep() {
 }
 
 function isValidMove(move) {
-  switch(move) {
+  switch (move) {
     case "a":
       return isValidLeftStep();
     case "d":
@@ -173,45 +143,50 @@ function isValidMove(move) {
 }
 
 function playGame() {
-  // if (confirm("Wanna Make Step")) {
-    console.log("Up: 'w', Down: 's' , Left: 'a' , Right: 'd'");
-    const move = prompt("Make Move: ");
-    // if (!isValidRightStep()) {
-    //   console.log("Bear Can't step out of forest since there is danger");
-    //   return playGame();
-    // }
+  console.log("Up: 'w', Down: 's' , Left: 'a' , Right: 'd'");
+  const move = prompt("Make Move: ");
 
-    // if (!isValidLeftStep()) {
-    //   console.log("Bear Can't step out of forest since there is danger");
-    //   return playGame();
-    // }
-    // if (!isValidUpStep()) {
-    //   console.log("Bear Can't step out of forest since there is danger");
-    //   return playGame();
-    // }
-    // if (!isValidDownStep()) {
-    //     console.log("Bear Can't step out of forest since there is danger");
-    //     return playGame();
-    //   }
-
-    if (!isValidMove(move)) {
-      console.log("Bear Can't step out of forest since there is danger");
-      return playGame();
-    }
-
-    gameFrame = modifyGameFrame(move);
-   
-    // gameFrame = takeRight(0, bearPosition, true);
-    // gameFrame = takeLeft(0, bearPosition, true);
-    // gameFrame = moveUp(0, bearPosition, true);
-    // gameFrame = moveDown(0, bearPosition, true);
-    console.clear();
-    console.log(gameFrame);
+  if (!isValidMove(move)) {
+    console.log("Bear Can't step out of forest since there is danger");
     return playGame();
-  // }
+  }
 
-  // return "";
+  gameFrame = modifyGameFrame(move);
+  console.clear();
+  console.log(gameFrame);
+
+  if (isWon) {
+    console.log();
+    console.log();
+    console.log("      ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱");
+    console.log("      ┃                     You won 🏅                     ┃");
+    console.log("      ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱");
+    console.log()
+    console.log();
+    return "Thanks For playing ,please pin us  to feed Bear again 😉";
+  }
+
+  return playGame();
 }
 
 console.log(gameFrame);
-playGame();
+const result = playGame();
+console.log(result);
+console.log();
+
+// function selectMap() {
+//   const selectedMap = Math.ceil(Math.random() * 10)
+//   return 
+// }
+
+// function gameHome() {
+//   const mapNumber = selectMap();
+//   gameFrame =  getMap(mapNumber);
+//   foodPostion = getFoodPosition(mapNumber);
+//   bearPosition = getBearPosition(mapNumber);
+//   huntersPosition = getHunterPosition(mapNumber);
+//   console.log(gameFrame);
+//   const result = playGame();
+//   console.log(result);
+//   console.log();
+// }
