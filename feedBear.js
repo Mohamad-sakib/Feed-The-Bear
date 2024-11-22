@@ -122,11 +122,11 @@ function isValidRightStep() {
 }
 
 function isValidUpStep() {
-  return bearPosition > 6
+  return bearPosition > 6;
 }
 
 function isValidDownStep() {
-  return bearPosition < 13
+  return bearPosition < 13;
 }
 
 function isValidMove(move) {
