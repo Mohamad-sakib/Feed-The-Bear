@@ -337,7 +337,7 @@ function isValidMove(gameFrame, move) {
 
 const upperBorder = "╔════════✧═✧═════════╗\n";
 const bottomBorder = "╚═════════✧✧═════════╝\n";
-let escapeReamining = 0;
+let escapeReamining = 3;
 let foodRemaining = 5;
 
 function showCurrentStatus() {
